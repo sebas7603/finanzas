@@ -13,6 +13,8 @@ class PaymentMethod extends Model
         'name',
         'account_id',
         'card_id',
+        'enabled',
+        'credit',
     ];
 
     public function account()

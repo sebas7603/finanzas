@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('account_id')->nullable();
             $table->unsignedBigInteger('card_id')->nullable();
+            $table->boolean('enabled')->default(true);
+            $table->boolean('credit')->default(false);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->foreign('account_id')->references('id')->on('accounts');
