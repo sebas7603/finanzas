@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             TagSeeder::class,
             CategorySeeder::class,
+            ExternalSeeder::class,
         ]);
     }
 }
