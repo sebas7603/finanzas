@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             SubscriptionSeeder::class,
             PaymentSeeder::class,
             MovementTypeSeeder::class,
+            FinancialSeeder::class,
         ]);
     }
 }

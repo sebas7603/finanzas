@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('financials', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->smallInteger('day');
+            $table->smallInteger('day')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
