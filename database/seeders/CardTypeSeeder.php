@@ -16,8 +16,8 @@ class CardTypeSeeder extends Seeder
     public function run()
     {
         DB::table('card_types')->insert([
-            ['name' => 'Tarjeta Débito'],
-            ['name' => 'Tarjeta de Crédito'],
+            ['id' => 1, 'name' => 'Tarjeta Débito'],
+            ['id' => 2, 'name' => 'Tarjeta de Crédito'],
         ]);
     }
 }

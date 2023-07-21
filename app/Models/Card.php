@@ -10,8 +10,10 @@ class Card extends Model
     use HasFactory;
 
     protected $fillable = [
+        'bank_id',
         'account_id',
         'card_type_id',
+        'last_numbers',
         'quota',
         'amount',
         'fee',

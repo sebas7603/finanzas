@@ -21,16 +21,19 @@ class AccountSeeder extends Seeder
         $daleBank = Bank::where('name', 'Dale')->first();
         DB::table('accounts')->insert([
             [
+                'id' => 1,
                 'bank_id' => $luloBank->id,
                 'number' => '01234561',
                 'balance' => 2500000.00
             ],
             [
+                'id' => 2,
                 'bank_id' => $coofinepBank->id,
                 'number' => '01234562',
                 'balance' => 10000.00
             ],
             [
+                'id' => 3,
                 'bank_id' => $daleBank->id,
                 'number' => '01234563',
                 'balance' => 20000.00
