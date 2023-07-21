@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('picture')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
         });
     }
 

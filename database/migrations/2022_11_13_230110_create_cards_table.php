@@ -22,7 +22,8 @@ return new class extends Migration
             $table->decimal('fee', 11, 2)->default(0.0);
             $table->smallInteger('balance_day')->default(1);
             $table->smallInteger('payment_day')->default(1);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->foreign('account_id')->references('id')->on('accounts');
             $table->foreign('card_type_id')->references('id')->on('card_types');
         });

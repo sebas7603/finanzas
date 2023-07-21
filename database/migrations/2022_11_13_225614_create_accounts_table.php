@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('bank_id');
             $table->decimal('balance', 11, 2);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->foreign('bank_id')->references('id')->on('banks');
         });
     }

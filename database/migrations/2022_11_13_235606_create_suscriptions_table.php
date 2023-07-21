@@ -21,7 +21,8 @@ return new class extends Migration
             $table->smallInteger('month')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('external_id');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('external_id')->references('id')->on('externals');
         });

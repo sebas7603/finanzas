@@ -20,7 +20,8 @@ return new class extends Migration
             $table->decimal('outcomed_money', 11, 2)->default(0);
             $table->decimal('balance', 11, 2)->default(0);
             $table->dateTime('date');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->foreign('financial_id')->references('id')->on('financials');
         });
     }

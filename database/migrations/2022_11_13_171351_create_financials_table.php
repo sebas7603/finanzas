@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->smallInteger('day');
             $table->unsignedBigInteger('user_id');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

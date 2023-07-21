@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('account_id')->nullable();
             $table->unsignedBigInteger('card_id')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->foreign('account_id')->references('id')->on('accounts');
             $table->foreign('card_id')->references('id')->on('cards');
         });

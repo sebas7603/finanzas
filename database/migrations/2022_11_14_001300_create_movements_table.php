@@ -26,7 +26,8 @@ return new class extends Migration
             $table->unsignedBigInteger('external_id')->nullable();
             $table->unsignedBigInteger('payment_id')->nullable();
             $table->unsignedBigInteger('account_id')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->foreign('financial_id')->references('id')->on('financials');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('movement_type_id')->references('id')->on('movement_types');

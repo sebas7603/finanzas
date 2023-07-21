@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('movement_id');
             $table->unsignedBigInteger('tag_id');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->foreign('movement_id')->references('id')->on('movements');
             $table->foreign('tag_id')->references('id')->on('tags');
         });
