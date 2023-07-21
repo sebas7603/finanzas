@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             MovementTypeSeeder::class,
             FinancialSeeder::class,
             MovementSeeder::class,
+            MovementTagSeeder::class,
         ]);
     }
 }
