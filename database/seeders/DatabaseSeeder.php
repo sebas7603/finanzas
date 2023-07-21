@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ExternalSeeder::class,
             DebtSeeder::class,
             SubscriptionSeeder::class,
+            PaymentSeeder::class,
         ]);
     }
 }
