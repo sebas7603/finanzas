@@ -19,9 +19,9 @@ class External extends Model
         return $this->hasMany(Debt::class);
     }
 
-    public function suscriptions()
+    public function subscriptions()
     {
-        return $this->hasMany(Suscription::class);
+        return $this->hasMany(Subscription::class);
     }
 
     public function movements()

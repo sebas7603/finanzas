@@ -14,7 +14,7 @@ class Payment extends Model
         'day',
         'payment_method_id',
         'debt_id',
-        'suscription_id',
+        'subscription_id',
         'card_id',
     ];
 
@@ -28,9 +28,9 @@ class Payment extends Model
         return $this->belongsTo(Debt::class);
     }
 
-    public function suscription()
+    public function subscription()
     {
-        return $this->belongsTo(Suscription::class);
+        return $this->belongsTo(Subscription::class);
     }
 
     public function Card()

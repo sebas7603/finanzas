@@ -23,6 +23,7 @@ class ExternalSeeder extends Seeder
             ['id' => 5, 'name' => 'Exito'],
             ['id' => 6, 'name' => 'Avianca'],
             ['id' => 7, 'name' => 'Twitch'],
+            ['id' => 8, 'name' => 'AWS'],
         ]);
     }
 }
