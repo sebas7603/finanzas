@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('description');
             $table->boolean('income')->default(true);
             $table->datetime('date');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('movement_type_id');
             $table->unsignedBigInteger('payment_method_id')->nullable();
             $table->unsignedBigInteger('external_id')->nullable();

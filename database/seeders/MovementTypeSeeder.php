@@ -18,6 +18,7 @@ class MovementTypeSeeder extends Seeder
         DB::table('movement_types')->insert([
             ['id' => 1, 'name' => 'Ingreso'],
             ['id' => 2, 'name' => 'Egreso'],
+            ['id' => 3, 'name' => 'Crédito'],
         ]);
     }
 }
