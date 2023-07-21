@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             CardSeeder::class,
             PaymentMethodSeeder::class,
             TagSeeder::class,
+            CategorySeeder::class,
         ]);
     }
 }

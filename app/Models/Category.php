@@ -10,19 +10,10 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
+        'slug',
         'name',
         'icon',
     ];
-
-    public function debts()
-    {
-        return $this->hasMany(Debt::class);
-    }
-
-    public function suscriptions()
-    {
-        return $this->hasMany(Suscription::class);
-    }
 
     public function movements()
     {
