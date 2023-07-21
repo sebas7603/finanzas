@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             TagSeeder::class,
             CategorySeeder::class,
             ExternalSeeder::class,
+            DebtSeeder::class,
         ]);
     }
 }
