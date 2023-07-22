@@ -25,11 +25,44 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'names' => 'required|string|min:3',
-            'lastnames' => 'required|string|min:3',
+            'names' => 'bail|required|string|min:3',
+            'lastnames' => 'bail|required|string|min:3',
             'email' => 'bail|required|string|email|min:6|unique:App\Models\User,email',
-            'password' => ['required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised()],
+            'password' => ['bail', 'required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised()],
             'password_confirmation' => 'required',
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'names' => 'nombre',
+            'lastnames' => 'appellido',
+            'email' => 'correo electrónico',
+            'password' => 'contraseña',
+            'password_confirmation' => 'confirmación de la contraseña',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'lastnames' => 'Los apellidos son obligatorios.',
+            'lastnames.min' => 'Los apellidos deben tener :min letrás mínimo.',
+            'password.required' => 'La contraseña es obligatoria.',
+            'password.confirmed' => 'La confirmación de la contraseña no coincide.',
+            'password.min' => 'La contraseña debe tener :min caracteres mínimo.',
+            'password_confirmation' => 'La confirmación de la contraseña es obligatoria.',
         ];
     }
 

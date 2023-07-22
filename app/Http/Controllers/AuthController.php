@@ -26,7 +26,7 @@ class AuthController extends Controller
         if (!$token) {
             return response()->json([
                 'success' => false,
-                'msg' => 'No autorizado',
+                'msg' => 'Las credenciales ingresadas son incorrectas',
             ], 401);
         }
 
@@ -68,7 +68,7 @@ class AuthController extends Controller
                         'expires_in' => auth()->factory()->getTTL() * 60,
                     ]
                 ]
-            ]);
+            ], 201);
         } catch (\Throwable $th) {
             DB::rollback();
             return response()->json([

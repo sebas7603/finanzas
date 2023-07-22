@@ -29,6 +29,32 @@ class LoginRequest extends FormRequest
         ];
     }
 
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'email' => 'correo electrónico',
+            'password' => 'contraseña',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'password' => 'La contraseña es obligatoria.',
+            'password.min' => 'La contraseña debe tener al menos :min caracteres.',
+        ];
+    }
+
     public function failedValidation(Validator $validator) : JsonResponse
     {
         throw new HttpResponseException(response()->json([
