@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('movements', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->unsignedBigInteger('financial_id');
             $table->decimal('amount', 11, 2)->default(0.0);
             $table->string('description');
@@ -28,6 +28,7 @@ return new class extends Migration
             $table->unsignedBigInteger('account_id')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->softDeletes();
             $table->foreign('financial_id')->references('id')->on('financials');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('movement_type_id')->references('id')->on('movement_types');

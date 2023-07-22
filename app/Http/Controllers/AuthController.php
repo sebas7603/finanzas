@@ -78,7 +78,7 @@ class AuthController extends Controller
                     'message' => $th->getMessage(),
                     'code' => $th->getCode()
                 ]
-            ], 404);
+            ], 500);
         }
     }
 

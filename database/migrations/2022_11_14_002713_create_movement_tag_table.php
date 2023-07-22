@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('movement_tag', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('movement_id');
+            $table->uuid('movement_id');
             $table->unsignedBigInteger('tag_id');
             $table->timestamp('created_at')->useCurrent();
             $table->foreign('movement_id')->references('id')->on('movements');
