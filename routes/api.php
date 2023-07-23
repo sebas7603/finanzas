@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\MovementController;
 
 /*
@@ -24,6 +25,14 @@ Route::controller(AuthController::class)->group(function() {
 });
 
 Route::middleware('auth')->group(function() {
+    Route::controller(FinancialController::class)->prefix('financials')->name('financials.')->group(function() {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'create')->name('create');
+        Route::get('/{id}', 'view')->name('view');
+        Route::put('/{id}', 'update')->name('update');
+        Route::delete('/{id}', 'delete')->name('delete');
+    });
+
     Route::controller(MovementController::class)->prefix('movements')->name('movements.')->group(function() {
         Route::get('/', 'index')->name('index');
         Route::post('/', 'create')->name('create');

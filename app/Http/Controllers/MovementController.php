@@ -44,7 +44,6 @@ class MovementController extends Controller
             DB::rollback();
             return $this->handleException($th);
         }
-
     }
 
     public function view(Request $request, $id) : JsonResponse
@@ -94,7 +93,7 @@ class MovementController extends Controller
                 'success' => true,
                 'msg' => 'El movimiento se ha actualizado con éxito',
                 'data' => [
-                    'movement' => $movement->load($this::RELATIONS)
+                    'movement' => $movement->refresh()->load($this::RELATIONS)
                 ]
             ]);
         } catch (\Throwable $th) {
