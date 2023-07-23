@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('financials', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
             $table->string('name');
             $table->smallInteger('day')->nullable();
             $table->unsignedBigInteger('user_id');

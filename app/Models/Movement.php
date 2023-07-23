@@ -28,6 +28,7 @@ class Movement extends Model
     ];
 
     protected $hidden = [
+        'financial_id',
         'movement_type_id',
         'category_id',
         'payment_method_id',

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('movements', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('financial_id');
+            $table->ulid('financial_id');
             $table->decimal('amount', 11, 2)->default(0.0);
             $table->string('description');
             $table->boolean('income')->default(true);

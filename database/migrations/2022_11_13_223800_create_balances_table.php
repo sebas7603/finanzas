@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('balances', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('financial_id');
+            $table->ulid('financial_id');
             $table->decimal('incomed_money', 11, 2)->default(0);
             $table->decimal('outcomed_money', 11, 2)->default(0);
             $table->decimal('balance', 11, 2)->default(0);
