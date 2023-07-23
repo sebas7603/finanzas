@@ -6,7 +6,9 @@ use App\Models\Movement;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Requests\Movement\CreateMovementRequest;
+use App\Http\Requests\Movement\UpdateMovementRequest;
 
 class MovementController extends Controller
 {
@@ -25,6 +27,7 @@ class MovementController extends Controller
 
     public function create(CreateMovementRequest $request) : JsonResponse
     {
+        $this->authorize('create', Movement::class);
         try {
             DB::beginTransaction();
             $movement = Movement::create($request->all());
@@ -39,47 +42,31 @@ class MovementController extends Controller
             ], 201);
         } catch (\Throwable $th) {
             DB::rollback();
-            return response()->json([
-                'success' => false,
-                'msg' => 'Ups! Hubo un error inesperado',
-                'error' => [
-                    'message' => $th->getMessage(),
-                    'code' => $th->getCode()
-                ]
-            ], 500);
+            return $this->handleException($th);
         }
 
     }
 
     public function view(Request $request, $id) : JsonResponse
     {
-        try {
-            $movement = Movement::find($id);
-            if (!$movement) {
-                return response()->json([
-                    'success' => false,
-                    'msg' => 'El movimiento no existe',
-                ], 404);
-            }
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'movement' => $movement->load($this::RELATIONS)
-                ]
-            ]);
-        } catch (\Throwable $th) {
+        $movement = Movement::find($id);
+        if (!$movement) {
             return response()->json([
                 'success' => false,
-                'msg' => 'Ups! Hubo un error inesperado',
-                'error' => [
-                    'message' => $th->getMessage(),
-                    'code' => $th->getCode()
-                ]
-            ], 500);
+                'msg' => 'El movimiento no existe',
+            ], 404);
         }
+
+        $this->authorize('view', $movement);
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'movement' => $movement->load($this::RELATIONS)
+            ]
+        ]);
     }
 
-    public function update(Request $request, $id) : JsonResponse
+    public function update(UpdateMovementRequest $request, $id) : JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -91,6 +78,7 @@ class MovementController extends Controller
                 ], 404);
             }
 
+            $this->authorize('update', $movement);
             $movement->update($request->all());
             if ($request->has('tags')) {
                 if (empty($request->tags)) {
@@ -111,44 +99,46 @@ class MovementController extends Controller
             ]);
         } catch (\Throwable $th) {
             DB::rollback();
-            return response()->json([
-                'success' => false,
-                'msg' => 'Ups! Hubo un error inesperado',
-                'error' => [
-                    'tags' => $request->tags[0],
-                    'message' => $th->getMessage(),
-                    'code' => $th->getCode()
-                ]
-            ], 500);
+            return $this->handleException($th);
         }
     }
 
     public function delete(Request $request, $id) : JsonResponse
     {
-        try {
-            $movement = Movement::find($id);
-            if (!$movement) {
-                return response()->json([
-                    'success' => false,
-                    'msg' => 'El movimiento no existe',
-                ], 404);
-            }
-
-            $movement->tags()->detach();
-            $movement->delete();
-            return response()->json([
-                'success' => true,
-                'msg' => 'El movimiento se ha eliminado con éxito',
-            ]);
-        } catch (\Throwable $th) {
+        $movement = Movement::find($id);
+        if (!$movement) {
             return response()->json([
                 'success' => false,
-                'msg' => 'Ups! Hubo un error inesperado',
-                'error' => [
-                    'message' => $th->getMessage(),
-                    'code' => $th->getCode()
-                ]
-            ], 500);
+                'msg' => 'El movimiento no existe',
+            ], 404);
         }
+
+        $this->authorize('delete', $movement);
+        $movement->tags()->detach();
+        $movement->delete();
+        return response()->json([
+            'success' => true,
+            'msg' => 'El movimiento se ha eliminado con éxito',
+        ]);
+    }
+
+    public function handleException (\Throwable $e) : JsonResponse
+    {
+        $msg = 'Ups! Hubo un error inesperado';
+        $code = 500;
+
+        if ($e instanceof AuthorizationException) {
+            $msg = 'El usuario no está autorizado para esta operación';
+            $code = 403;
+        }
+
+        return response()->json([
+            'success' => false,
+            'msg' => $msg,
+            'error' => [
+                'message' => $e->getMessage(),
+                'code' => $e->getCode()
+            ]
+        ], $code);
     }
 }

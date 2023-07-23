@@ -23,7 +23,8 @@ class MovementPolicy
      */
     public function view(User $user, Movement $movement): bool
     {
-        //
+        $financial = Financial::findOrFail($movement->financial_id);
+        return $user->financials->contains($financial);
     }
 
     /**
@@ -31,7 +32,14 @@ class MovementPolicy
      */
     public function update(User $user, Movement $movement): bool
     {
-        //
+        $financial = Financial::findOrFail($movement->financial_id);
+        if ($movement->financial_id == app('request')->get('financial_id')) {
+            return $user->financials->contains($financial);
+        }
+
+        // Deny if the user tries to exchange the financial for another user's
+        $newFinancial = Financial::findOrFail(app('request')->get('financial_id'));
+        return count($user->financials->diff([$financial, $newFinancial])) > 0;
     }
 
     /**
@@ -39,6 +47,7 @@ class MovementPolicy
      */
     public function delete(User $user, Movement $movement): bool
     {
-        //
+        $financial = Financial::findOrFail($movement->financial_id);
+        return $user->financials->contains($financial);
     }
 }
