@@ -19,9 +19,9 @@ return new class extends Migration
             $table->decimal('amount', 11, 2)->default(0.0);
             $table->string('description');
             $table->boolean('income')->default(true);
-            $table->datetime('date');
-            $table->unsignedBigInteger('category_id')->nullable();
+            $table->date('date')->useCurrent();
             $table->unsignedBigInteger('movement_type_id');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('payment_method_id')->nullable();
             $table->unsignedBigInteger('external_id')->nullable();
             $table->unsignedBigInteger('payment_id')->nullable();

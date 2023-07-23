@@ -6,6 +6,7 @@ use App\Models\Movement;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Movement\CreateMovementRequest;
 
 class MovementController extends Controller
 {
@@ -22,7 +23,7 @@ class MovementController extends Controller
         ]);
     }
 
-    public function create(Request $request) : JsonResponse
+    public function create(CreateMovementRequest $request) : JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -33,14 +34,14 @@ class MovementController extends Controller
                 'success' => true,
                 'msg' => 'El movimiento se ha creado con éxito',
                 'data' => [
-                    'movement' => $movement->load($this::RELATIONS)
+                    'movement' => $movement->refresh()->load($this::RELATIONS)
                 ]
             ], 201);
         } catch (\Throwable $th) {
             DB::rollback();
             return response()->json([
                 'success' => false,
-                'msg' => 'Ops! Hubo un error inesperado',
+                'msg' => 'Ups! Hubo un error inesperado',
                 'error' => [
                     'message' => $th->getMessage(),
                     'code' => $th->getCode()
@@ -69,7 +70,7 @@ class MovementController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'msg' => 'Ops! Hubo un error inesperado',
+                'msg' => 'Ups! Hubo un error inesperado',
                 'error' => [
                     'message' => $th->getMessage(),
                     'code' => $th->getCode()
@@ -112,7 +113,7 @@ class MovementController extends Controller
             DB::rollback();
             return response()->json([
                 'success' => false,
-                'msg' => 'Ops! Hubo un error inesperado',
+                'msg' => 'Ups! Hubo un error inesperado',
                 'error' => [
                     'tags' => $request->tags[0],
                     'message' => $th->getMessage(),
@@ -142,7 +143,7 @@ class MovementController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'msg' => 'Ops! Hubo un error inesperado',
+                'msg' => 'Ups! Hubo un error inesperado',
                 'error' => [
                     'message' => $th->getMessage(),
                     'code' => $th->getCode()

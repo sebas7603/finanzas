@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -46,5 +47,39 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof AuthorizationException) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'El usuario no está autorizado para esta operación',
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'code' => $e->getCode()
+                ]
+            ], 403);
+        }
+
+        if ($e instanceof ModelNotFoundException) {
+            return response()->json([
+                'success' => false,
+                'msg' => 'No se encontró el recurso solicitado',
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'code' => $e->getCode()
+                ]
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => false,
+            'msg' => 'Ups! Hubo un error inesperado',
+            'error' => [
+                'message' => $e->getMessage(),
+                'code' => $e->getCode()
+            ]
+        ], 500);
     }
 }

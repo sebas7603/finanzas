@@ -19,8 +19,8 @@ class Movement extends Model
         'description',
         'income',
         'date',
-        'category_id',
         'movement_type_id',
+        'category_id',
         'payment_method_id',
         'external_id',
         'payment_id',
@@ -28,12 +28,20 @@ class Movement extends Model
     ];
 
     protected $hidden = [
-        'category_id',
         'movement_type_id',
+        'category_id',
         'payment_method_id',
         'external_id',
         'payment_id',
         'account_id',
+    ];
+
+    protected $casts = [
+        'income' => 'boolean',
+        'date' => 'timestamp',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+        'deleted_at' => 'timestamp',
     ];
 
     public function financial()
