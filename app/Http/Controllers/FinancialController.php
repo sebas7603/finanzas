@@ -49,6 +49,8 @@ class FinancialController extends Controller
     {
         $financial = Financial::find($id);
         if (!$financial) return ReturnHelper::returnNotFound('Las finanzas no existen');
+
+        $this->authorize('view', $financial);
         return response()->json([
             'success' => true,
             'data' => [
@@ -69,6 +71,7 @@ class FinancialController extends Controller
             $financial = Financial::find($id);
             if (!$financial) return ReturnHelper::returnNotFound('Las finanzas no existen');
 
+            $this->authorize('update', $financial);
             $financial->update($request->all());
             DB::commit();
             return response()->json([
@@ -94,6 +97,7 @@ class FinancialController extends Controller
         $financial = Financial::find($id);
         if (!$financial) return ReturnHelper::returnNotFound('Las finanzas no existen');
 
+        $this->authorize('delete', $financial);
         $financial->delete();
         return response()->json([
             'success' => true,

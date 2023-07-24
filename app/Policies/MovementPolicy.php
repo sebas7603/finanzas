@@ -19,7 +19,7 @@ class MovementPolicy
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can list all models.
      */
     public function index(User $user): bool
     {
