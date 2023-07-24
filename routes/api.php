@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\MovementController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,5 +42,12 @@ Route::middleware('auth')->group(function() {
         });
     });
 
+    Route::controller(CategoryController::class)->prefix('/categories')->name('categories.')->group(function() {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'create')->name('create');
+        Route::get('/{slug}', 'view')->name('view');
+        Route::put('/{slug}', 'update')->name('update');
+        Route::delete('/{slug}', 'delete')->name('delete');
+    });
 });
 

@@ -10,19 +10,22 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'slug',
         'name',
         'icon',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'user_id',
     ];
+
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
+    /**
+     * Eloquent Relationships
+     */
 
     public function user()
     {
