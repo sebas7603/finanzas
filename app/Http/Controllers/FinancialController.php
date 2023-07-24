@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ReturnHelper;
+use App\Http\Requests\Financial\StoreFinancialRequest;
 use App\Models\Financial;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class FinancialController extends Controller
         ]);
     }
 
-    public function create(Request $request) : JsonResponse
+    public function create(StoreFinancialRequest $request) : JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -61,7 +62,7 @@ class FinancialController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id) : JsonResponse
+    public function update(StoreFinancialRequest $request, $id) : JsonResponse
     {
         try {
             DB::beginTransaction();

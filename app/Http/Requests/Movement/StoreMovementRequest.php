@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 
-class UpdateMovementRequest extends FormRequest
+class StoreMovementRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

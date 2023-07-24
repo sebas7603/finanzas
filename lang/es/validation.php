@@ -24,6 +24,12 @@ return [
     'distinct' => 'Los :attribute tienen un valor duplicado.',
     'email' => 'El :attribute no es un email válido.',
     'exists' => 'El :attribute seleccionado no existe.',
+    'max' => [
+        'array' => 'El :attribute no debe tenér mas de :max items.',
+        'file' => 'El :attribute no debe tener más de :max kilobytes.',
+        'numeric' => 'El :attribute no debe tener un valor mayor a :max.',
+        'string' => 'El :attribute no debe tener más de :max caracteres.',
+    ],
     'min' => [
         'array' => 'El :attribute debe tener al menos :min items.',
         'file' => 'El :attribute debe tener al menos :min kilobytes.',

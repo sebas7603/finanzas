@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ReturnHelper;
-use App\Http\Requests\Movement\CreateMovementRequest;
-use App\Http\Requests\Movement\UpdateMovementRequest;
+use App\Http\Requests\Movement\StoreMovementRequest;
 use App\Models\Financial;
 use App\Models\Movement;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -28,7 +27,7 @@ class MovementController extends Controller
         ]);
     }
 
-    public function create(CreateMovementRequest $request, $financial_id) : JsonResponse
+    public function create(StoreMovementRequest $request, $financial_id) : JsonResponse
     {
         $this->authorize('create', Movement::class);
         $params = $request->all();
@@ -65,7 +64,7 @@ class MovementController extends Controller
         ]);
     }
 
-    public function update(UpdateMovementRequest $request, $financial_id, $id) : JsonResponse
+    public function update(StoreMovementRequest $request, $financial_id, $id) : JsonResponse
     {
         try {
             DB::beginTransaction();
