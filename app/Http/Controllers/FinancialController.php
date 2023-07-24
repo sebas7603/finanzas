@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ReturnHelper;
 use App\Models\Financial;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -39,14 +40,14 @@ class FinancialController extends Controller
             ], 201);
         } catch (\Throwable $th) {
             DB::rollback();
-            return $this->handleException($th);
+            return ReturnHelper::returnException($th);
         }
     }
 
     public function view(Request $request, $id) : JsonResponse
     {
         $financial = Financial::find($id);
-        if (!$financial) return $this->returnFinancial404();
+        if (!$financial) return ReturnHelper::returnNotFound('Las finanzas no existen');
         return response()->json([
             'success' => true,
             'data' => [
@@ -65,7 +66,7 @@ class FinancialController extends Controller
         try {
             DB::beginTransaction();
             $financial = Financial::find($id);
-            if (!$financial) return $this->returnFinancial404();
+            if (!$financial) return ReturnHelper::returnNotFound('Las finanzas no existen');
 
             $financial->update($request->all());
             DB::commit();
@@ -83,47 +84,19 @@ class FinancialController extends Controller
             ]);
         } catch (\Throwable $th) {
             DB::rollback();
-            return $this->handleException($th);
+            return ReturnHelper::returnException($th);
         }
     }
 
     public function delete(Request $request, $id) : JsonResponse
     {
         $financial = Financial::find($id);
-        if (!$financial) return $this->returnFinancial404();
+        if (!$financial) return ReturnHelper::returnNotFound('Las finanzas no existen');
 
         $financial->delete();
         return response()->json([
             'success' => true,
             'msg' => 'Las finanzas se han eliminado con éxito',
         ]);
-    }
-
-    public function returnFinancial404 () : JsonResponse
-    {
-        return response()->json([
-            'success' => false,
-            'msg' => 'Las finanzas no existen',
-        ], 404);
-    }
-
-    public function handleException (\Throwable $e) : JsonResponse
-    {
-        $msg = 'Ups! Hubo un error inesperado';
-        $code = 500;
-
-        if ($e instanceof AuthorizationException) {
-            $msg = 'El usuario no está autorizado para esta operación';
-            $code = 403;
-        }
-
-        return response()->json([
-            'success' => false,
-            'msg' => $msg,
-            'error' => [
-                'message' => $e->getMessage(),
-                'code' => $e->getCode()
-            ]
-        ], $code);
     }
 }

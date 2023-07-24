@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Financial;
-use App\Models\Movement;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Auth\Access\AuthorizationException;
+use App\Helpers\ReturnHelper;
 use App\Http\Requests\Movement\CreateMovementRequest;
 use App\Http\Requests\Movement\UpdateMovementRequest;
+use App\Models\Financial;
+use App\Models\Movement;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MovementController extends Controller
 {
@@ -46,14 +47,14 @@ class MovementController extends Controller
             ], 201);
         } catch (\Throwable $th) {
             DB::rollback();
-            return $this->handleException($th);
+            return ReturnHelper::returnException($th);
         }
     }
 
     public function view(Request $request, $financial_id, $id) : JsonResponse
     {
         $movement = Movement::where('financial_id', $financial_id)->where('id', $id)->first();
-        if (!$movement) return $this->returnMovement404();
+        if (!$movement) return ReturnHelper::returnNotFound('El movimiento no existe');
 
         $this->authorize('view', $movement);
         return response()->json([
@@ -69,7 +70,7 @@ class MovementController extends Controller
         try {
             DB::beginTransaction();
             $movement = Movement::where('financial_id', $financial_id)->where('id', $id)->first();
-            if (!$movement) return $this->returnMovement404();
+            if (!$movement) return ReturnHelper::returnNotFound('El movimiento no existe');
 
             $this->authorize('update', $movement);
             $movement->update($request->all());
@@ -92,14 +93,14 @@ class MovementController extends Controller
             ]);
         } catch (\Throwable $th) {
             DB::rollback();
-            return $this->handleException($th);
+            return ReturnHelper::returnException($th);
         }
     }
 
     public function delete(Request $request, $financial_id, $id) : JsonResponse
     {
         $movement = Movement::where('financial_id', $financial_id)->where('id', $id)->first();
-        if (!$movement) return $this->returnMovement404();
+        if (!$movement) return ReturnHelper::returnNotFound('El movimiento no existe');
 
         $this->authorize('delete', $movement);
         $movement->tags()->detach();
@@ -108,33 +109,5 @@ class MovementController extends Controller
             'success' => true,
             'msg' => 'El movimiento se ha eliminado con éxito',
         ]);
-    }
-
-    public function returnMovement404 () : JsonResponse
-    {
-        return response()->json([
-            'success' => false,
-            'msg' => 'El movimiento no existe',
-        ], 404);
-    }
-
-    public function handleException (\Throwable $e) : JsonResponse
-    {
-        $msg = 'Ups! Hubo un error inesperado';
-        $code = 500;
-
-        if ($e instanceof AuthorizationException) {
-            $msg = 'El usuario no está autorizado para esta operación';
-            $code = 403;
-        }
-
-        return response()->json([
-            'success' => false,
-            'msg' => $msg,
-            'error' => [
-                'message' => $e->getMessage(),
-                'code' => $e->getCode()
-            ]
-        ], $code);
     }
 }

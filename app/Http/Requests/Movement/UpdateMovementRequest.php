@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Movement;
 
+use App\Helpers\ReturnHelper;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -92,12 +93,6 @@ class UpdateMovementRequest extends FormRequest
 
     public function failedValidation(Validator $validator) : JsonResponse
     {
-        throw new HttpResponseException(response()->json([
-            'success' => false,
-            'msg' => 'Errores en los datos enviados',
-            'error' => [
-                'fields' => $validator->errors()
-            ]
-        ]));
+        throw new HttpResponseException(ReturnHelper::returnBadRequest($validator));
     }
 }
