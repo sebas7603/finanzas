@@ -54,6 +54,7 @@ class CategoryController extends Controller
         $user = Auth::user();
         $category = Category::where('user_id', $user->id)->where('slug', $slug)->first();
         if (!$category) return ReturnHelper::returnNotFound('La categoría no existe');
+        $this->authorize('view', $category);
 
         return response()->json([
             'success' => true,
@@ -65,11 +66,13 @@ class CategoryController extends Controller
 
     public function update(StoreCategoryRequest $request, $slug) : JsonResponse
     {
+        $user = Auth::user();
+        $category = Category::where('user_id', $user->id)->where('slug', $slug)->first();
+        if (!$category) return ReturnHelper::returnNotFound('La categoría no existe');
+        $this->authorize('update', $category);
+
         try {
             DB::beginTransaction();
-            $user = Auth::user();
-            $category = Category::where('user_id', $user->id)->where('slug', $slug)->first();
-            if (!$category) return ReturnHelper::returnNotFound('La categoría no existe');
             if ($request->name !== $category->name) $category->slug = SlugHelper::getNonUniqueSlug($category, $request->name, 'user_id');
             $category->update($request->all());
             DB::commit();
@@ -92,6 +95,7 @@ class CategoryController extends Controller
         $user = Auth::user();
         $category = Category::where('user_id', $user->id)->where('slug', $slug)->first();
         if (!$category) return ReturnHelper::returnNotFound('La categoría no existe');
+        $this->authorize('delete', $category);
 
         $category->delete();
         return response()->json([
