@@ -27,7 +27,8 @@ class StoreFinancialRequest extends FormRequest
     {
         return [
             'name' => 'bail|required|string|min:3',
-            'day' => 'bail|nullable|numeric|min:1|max:28'
+            'day' => 'bail|nullable|numeric|min:1|max:28',
+            'user_id' => 'missing',
         ];
     }
 
@@ -41,6 +42,7 @@ class StoreFinancialRequest extends FormRequest
         return [
             'name' => 'nombre',
             'day' => 'día',
+            'user_id' => 'usuario',
         ];
     }
 

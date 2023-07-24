@@ -14,7 +14,6 @@ class Financial extends Model
     protected $fillable = [
         'name',
         'day',
-        'user_id',
     ];
 
     protected $hidden = [

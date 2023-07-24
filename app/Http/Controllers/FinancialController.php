@@ -28,9 +28,10 @@ class FinancialController extends Controller
     {
         try {
             DB::beginTransaction();
-            $params = $request->all();
-            $params['user_id'] = Auth::id();
-            $financial = Financial::create($params);
+            $financial = new Financial();
+            $financial->fill($request->all());
+            $financial->user_id = Auth::id();
+            $financial->save();
             DB::commit();
             return response()->json([
                 'success' => true,

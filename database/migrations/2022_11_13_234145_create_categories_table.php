@@ -18,8 +18,10 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('name');
             $table->string('icon')->nullable();
+            $table->uuid('user_id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
