@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ReturnHelper;
 use App\Helpers\SlugHelper;
+use App\Http\Requests\Category\StoreCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function create(Request $request) : JsonResponse
+    public function create(StoreCategoryRequest $request) : JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -62,7 +63,7 @@ class CategoryController extends Controller
         ]);
     }
 
-    public function update(Request $request, $slug) : JsonResponse
+    public function update(StoreCategoryRequest $request, $slug) : JsonResponse
     {
         try {
             DB::beginTransaction();

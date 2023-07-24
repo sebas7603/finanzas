@@ -51,5 +51,5 @@ return [
     'required_unless' => 'El :attribute es obligatorio si el :other es diferente a :values.',
     'string' => 'El :attribute debe ser un string.',
     'unique' => 'Ya existe un usuario con este :attribute.',
-
+    'url' => 'La :attribute debe ser una URL válida.',
 ];
