@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Financial;
 use App\Models\Movement;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -14,23 +15,26 @@ class MovementController extends Controller
 {
     const RELATIONS = ['financial', 'category', 'movementType', 'paymentMethod', 'external', 'payment', 'account', 'tags'];
 
-    public function index() : JsonResponse
+    public function index($financial_id) : JsonResponse
     {
-        $movements = Movement::all()->load($this::RELATIONS);
+        $movements = Movement::where('financial_id', $financial_id)->get();
+        $this->authorize('index', Movement::class);
         return response()->json([
             'success' => true,
             'data' => [
-                'movements' => $movements
+                'movements' => $movements->load($this::RELATIONS)
             ]
         ]);
     }
 
-    public function create(CreateMovementRequest $request) : JsonResponse
+    public function create(CreateMovementRequest $request, $financial_id) : JsonResponse
     {
         $this->authorize('create', Movement::class);
+        $params = $request->all();
+        $params['financial_id'] = $financial_id;
         try {
             DB::beginTransaction();
-            $movement = Movement::create($request->all());
+            $movement = Movement::create($params);
             $movement->tags()->attach($request->tags);
             DB::commit();
             return response()->json([
@@ -46,15 +50,10 @@ class MovementController extends Controller
         }
     }
 
-    public function view(Request $request, $id) : JsonResponse
+    public function view(Request $request, $financial_id, $id) : JsonResponse
     {
-        $movement = Movement::find($id);
-        if (!$movement) {
-            return response()->json([
-                'success' => false,
-                'msg' => 'El movimiento no existe',
-            ], 404);
-        }
+        $movement = Movement::where('financial_id', $financial_id)->where('id', $id)->first();
+        if (!$movement) return $this->returnMovement404();
 
         $this->authorize('view', $movement);
         return response()->json([
@@ -65,17 +64,12 @@ class MovementController extends Controller
         ]);
     }
 
-    public function update(UpdateMovementRequest $request, $id) : JsonResponse
+    public function update(UpdateMovementRequest $request, $financial_id, $id) : JsonResponse
     {
         try {
             DB::beginTransaction();
-            $movement = Movement::find($id);
-            if (!$movement) {
-                return response()->json([
-                    'success' => false,
-                    'msg' => 'El movimiento no existe',
-                ], 404);
-            }
+            $movement = Movement::where('financial_id', $financial_id)->where('id', $id)->first();
+            if (!$movement) return $this->returnMovement404();
 
             $this->authorize('update', $movement);
             $movement->update($request->all());
@@ -102,15 +96,10 @@ class MovementController extends Controller
         }
     }
 
-    public function delete(Request $request, $id) : JsonResponse
+    public function delete(Request $request, $financial_id, $id) : JsonResponse
     {
-        $movement = Movement::find($id);
-        if (!$movement) {
-            return response()->json([
-                'success' => false,
-                'msg' => 'El movimiento no existe',
-            ], 404);
-        }
+        $movement = Movement::where('financial_id', $financial_id)->where('id', $id)->first();
+        if (!$movement) return $this->returnMovement404();
 
         $this->authorize('delete', $movement);
         $movement->tags()->detach();
@@ -119,6 +108,14 @@ class MovementController extends Controller
             'success' => true,
             'msg' => 'El movimiento se ha eliminado con éxito',
         ]);
+    }
+
+    public function returnMovement404 () : JsonResponse
+    {
+        return response()->json([
+            'success' => false,
+            'msg' => 'El movimiento no existe',
+        ], 404);
     }
 
     public function handleException (\Throwable $e) : JsonResponse

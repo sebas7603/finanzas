@@ -31,14 +31,15 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}', 'view')->name('view');
         Route::put('/{id}', 'update')->name('update');
         Route::delete('/{id}', 'delete')->name('delete');
+
+        Route::controller(MovementController::class)->prefix('/{financial_id}/movements')->middleware('check.financial')->name('movements.')->group(function() {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'create')->name('create');
+            Route::get('/{id}', 'view')->name('view');
+            Route::put('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'delete')->name('delete');
+        });
     });
 
-    Route::controller(MovementController::class)->prefix('movements')->name('movements.')->group(function() {
-        Route::get('/', 'index')->name('index');
-        Route::post('/', 'create')->name('create');
-        Route::get('/{id}', 'view')->name('view');
-        Route::put('/{id}', 'update')->name('update');
-        Route::delete('/{id}', 'delete')->name('delete');
-    });
 });
 

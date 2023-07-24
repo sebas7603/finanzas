@@ -14,7 +14,6 @@ class Movement extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'financial_id',
         'amount',
         'description',
         'income',

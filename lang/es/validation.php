@@ -30,6 +30,7 @@ return [
         'numeric' => 'El :attribute debe ser mayor o igual a :min.',
         'string' => 'El :attribute debe tener al menos :min caracteres.',
     ],
+    'missing' => 'El :attribute no debe estar en el request.',
     'numeric' => 'El :attribute debe ser un número.',
     'password' => [
         'letters' => 'La contraseña debe tener al menos una letra.',

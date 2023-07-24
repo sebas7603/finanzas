@@ -25,7 +25,7 @@ class CreateMovementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'financial_id' => 'bail|required|exists:App\Models\Financial,id',
+            'financial_id' => 'missing',
             'amount' => 'bail|required|numeric|min:500',
             'description' => 'bail|required|string|min:5',
             'income' => 'nullable|boolean',
@@ -73,8 +73,7 @@ class CreateMovementRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'financial_id.required' => 'Debe tener asignado unas finanzas.',
-            'financial_id.exists' => 'Las finanzas asignadas no existen.',
+            'financial_id.missing' => 'Las finanzas no deben estar en el request.',
             'description.required' => 'La descripción es obligatoria.',
             'description.string' => 'La descripción es inválida.',
             'description.min' => 'La descripción debe tener al menos :min caracteres.',

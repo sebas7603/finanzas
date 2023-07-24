@@ -10,12 +10,28 @@ use Illuminate\Auth\Access\Response;
 class MovementPolicy
 {
     /**
+     * This is a generic validation for this policy (Movement)
+     */
+    public function getGenericPolice(User $user, Movement $movement = null): bool
+    {
+        $financial = Financial::findOrFail(app('request')->route('financial_id'));
+        return $user->financials->contains($financial);
+    }
+
+    /**
+     * Determine whether the user can create models.
+     */
+    public function index(User $user): bool
+    {
+        return $this->getGenericPolice($user);
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
-        $financial = Financial::findOrFail(app('request')->get('financial_id'));
-        return $user->financials->contains($financial);
+        return $this->getGenericPolice($user);
     }
 
     /**
@@ -23,8 +39,7 @@ class MovementPolicy
      */
     public function view(User $user, Movement $movement): bool
     {
-        $financial = Financial::findOrFail($movement->financial_id);
-        return $user->financials->contains($financial);
+        return $this->getGenericPolice($user, $movement);
     }
 
     /**
@@ -32,14 +47,7 @@ class MovementPolicy
      */
     public function update(User $user, Movement $movement): bool
     {
-        $financial = Financial::findOrFail($movement->financial_id);
-        if ($movement->financial_id == app('request')->get('financial_id')) {
-            return $user->financials->contains($financial);
-        }
-
-        // Deny if the user tries to exchange the financial for another user's
-        $newFinancial = Financial::findOrFail(app('request')->get('financial_id'));
-        return count($user->financials->diff([$financial, $newFinancial])) > 0;
+        return $this->getGenericPolice($user, $movement);
     }
 
     /**
@@ -47,7 +55,6 @@ class MovementPolicy
      */
     public function delete(User $user, Movement $movement): bool
     {
-        $financial = Financial::findOrFail($movement->financial_id);
-        return $user->financials->contains($financial);
+        return $this->getGenericPolice($user, $movement);
     }
 }
