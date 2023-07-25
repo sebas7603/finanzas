@@ -13,6 +13,24 @@ class Tag extends Model
         'name',
     ];
 
+    protected $hidden = [
+        'user_id',
+    ];
+
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
+    /**
+     * Eloquent Relationships
+     */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function movements()
     {
         return $this->belongsToMany(Movement::class);

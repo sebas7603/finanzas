@@ -15,9 +15,13 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
+            $table->string('slug');
             $table->string('name');
+            $table->uuid('user_id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unique(['slug', 'user_id']);
         });
     }
 

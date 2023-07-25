@@ -16,16 +16,66 @@ class TagSeeder extends Seeder
     public function run()
     {
         DB::table('tags')->insert([
-            ['id' => 1, 'name' => 'Esencial'],
-            ['id' => 2, 'name' => 'Personal'],
-            ['id' => 3, 'name' => 'Trabajo'],
-            ['id' => 4, 'name' => 'Regalo'],
-            ['id' => 5, 'name' => 'Donación'],
-            ['id' => 6, 'name' => 'Ocasión Especial'],
-            ['id' => 7, 'name' => 'Hobbie'],
-            ['id' => 8, 'name' => 'Lujo'],
-            ['id' => 9, 'name' => 'Ahorro'],
-            ['id' => 10, 'name' => 'Préstamo'],
+            [
+                'id' => 1,
+                'name' => 'Esencial',
+                'slug' => 'esencial',
+                'user_id' => '1'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Personal',
+                'slug' => 'personal',
+                'user_id' => '1'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Trabajo',
+                'slug' => 'trabajo',
+                'user_id' => '1'
+            ],
+            [
+                'id' => 4,
+                'name' => 'Regalo',
+                'slug' => 'regalo',
+                'user_id' => '1'
+            ],
+            [
+                'id' => 5,
+                'name' => 'Donación',
+                'slug' => 'donacion',
+                'user_id' => '1'
+            ],
+            [
+                'id' => 6,
+                'name' => 'Ocasión Especial',
+                'slug' => 'ocasion-especial',
+                'user_id' => '1'
+            ],
+            [
+                'id' => 7,
+                'name' => 'Hobbie',
+                'slug' => 'hobbie',
+                'user_id' => '1'
+            ],
+            [
+                'id' => 8,
+                'name' => 'Lujo',
+                'slug' => 'lujo',
+                'user_id' => '1'
+            ],
+            [
+                'id' => 9,
+                'name' => 'Ahorro',
+                'slug' => 'ahorro',
+                'user_id' => '1'
+            ],
+            [
+                'id' => 10,
+                'name' => 'Préstamo',
+                'slug' => 'prestamo',
+                'user_id' => '1'
+            ],
         ]);
     }
 }
