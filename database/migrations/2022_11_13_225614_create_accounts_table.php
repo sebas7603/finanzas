@@ -14,13 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('accounts', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
             $table->unsignedBigInteger('bank_id');
             $table->string('number');
             $table->decimal('balance', 11, 2);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->softDeletes();
             $table->foreign('bank_id')->references('id')->on('banks');
+            $table->unique(['bank_id', 'number']);
         });
     }
 

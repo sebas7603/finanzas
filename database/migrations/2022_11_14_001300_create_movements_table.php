@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('payment_method_id')->nullable();
             $table->unsignedBigInteger('external_id')->nullable();
             $table->unsignedBigInteger('payment_id')->nullable();
-            $table->unsignedBigInteger('account_id')->nullable();
+            $table->ulid('account_id')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->softDeletes();

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bank_id');
-            $table->unsignedBigInteger('account_id')->nullable();
+            $table->ulid('account_id')->nullable();
             $table->unsignedBigInteger('card_type_id');
             $table->string('last_numbers', 4);
             $table->decimal('quota', 11, 2)->nullable();
