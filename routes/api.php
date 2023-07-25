@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ExternalController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\TagController;
@@ -52,6 +53,14 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::controller(TagController::class)->prefix('/tags')->name('tags.')->group(function() {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'create')->name('create');
+        Route::get('/{slug}', 'view')->name('view');
+        Route::put('/{slug}', 'update')->name('update');
+        Route::delete('/{slug}', 'delete')->name('delete');
+    });
+
+    Route::controller(ExternalController::class)->prefix('/externals')->name('externals.')->group(function() {
         Route::get('/', 'index')->name('index');
         Route::post('/', 'create')->name('create');
         Route::get('/{slug}', 'view')->name('view');
