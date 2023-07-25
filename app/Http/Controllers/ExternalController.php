@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ReturnHelper;
 use App\Helpers\SlugHelper;
+use App\Http\Requests\External\StoreExternalRequest;
 use App\Models\External;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class ExternalController extends Controller
         ]);
     }
 
-    public function create(Request $request) : JsonResponse
+    public function create(StoreExternalRequest $request) : JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -62,7 +63,7 @@ class ExternalController extends Controller
         ]);
     }
 
-    public function update(Request $request, $slug) : JsonResponse
+    public function update(StoreExternalRequest $request, $slug) : JsonResponse
     {
         $user = Auth::user();
         $external = External::where('user_id', $user->id)->where('slug', $slug)->first();
