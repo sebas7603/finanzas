@@ -17,9 +17,29 @@ class Account extends Model
         'balance',
     ];
 
+    protected $hidden = [
+        'financial_id',
+        'bank_id',
+    ];
+
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+        'deleted_at' => 'timestamp',
+    ];
+
+    /**
+     * Eloquent Relationships
+     */
+
     public function bank()
     {
         return $this->belongsTo(Bank::class);
+    }
+
+    public function financial()
+    {
+        return $this->belongsTo(Financial::class);
     }
 
     public function cards()

@@ -30,6 +30,11 @@ class Financial extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function accounts()
+    {
+        return $this->hasMany(Account::class);
+    }
+
     public function balances()
     {
         return $this->hasMany(Balance::class);

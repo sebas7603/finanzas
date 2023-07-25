@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CardTypeSeeder::class,
             BankSeeder::class,
+            FinancialSeeder::class,
             AccountSeeder::class,
             CardSeeder::class,
             PaymentMethodSeeder::class,
@@ -28,7 +29,6 @@ class DatabaseSeeder extends Seeder
             SubscriptionSeeder::class,
             PaymentSeeder::class,
             MovementTypeSeeder::class,
-            FinancialSeeder::class,
             MovementSeeder::class,
             MovementTagSeeder::class,
         ]);
