@@ -54,6 +54,7 @@ class TagController extends Controller
         $user = Auth::user();
         $tag = Tag::where('user_id', $user->id)->where('slug', $slug)->first();
         if (!$tag) return ReturnHelper::returnNotFound('La etiqueta no existe');
+        $this->authorize('view', $tag);
 
         return response()->json([
             'success' => true,
@@ -68,6 +69,7 @@ class TagController extends Controller
         $user = Auth::user();
         $tag = Tag::where('user_id', $user->id)->where('slug', $slug)->first();
         if (!$tag) return ReturnHelper::returnNotFound('La etiqueta no existe');
+        $this->authorize('update', $tag);
 
         try {
             DB::beginTransaction();
@@ -93,6 +95,7 @@ class TagController extends Controller
         $user = Auth::user();
         $tag = Tag::where('user_id', $user->id)->where('slug', $slug)->first();
         if (!$tag) return ReturnHelper::returnNotFound('La etiqueta no existe');
+        $this->authorize('delete', $tag);
 
         $tag->delete();
         return response()->json([

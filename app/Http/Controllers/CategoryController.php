@@ -69,8 +69,8 @@ class CategoryController extends Controller
         $user = Auth::user();
         $category = Category::where('user_id', $user->id)->where('slug', $slug)->first();
         if (!$category) return ReturnHelper::returnNotFound('La categoría no existe');
-
         $this->authorize('update', $category);
+
         try {
             DB::beginTransaction();
             if (SlugHelper::checkIfSlugNeedsChange($category->name, $request->name)) $category->slug = SlugHelper::getNonUniqueSlug($category, $request->name, 'user_id');
