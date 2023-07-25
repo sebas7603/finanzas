@@ -2,10 +2,11 @@
 
 namespace App\Helpers;
 
+use Throwable;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\JsonResponse;
-use Throwable;
 
 class ReturnHelper
 {
@@ -27,35 +28,33 @@ class ReturnHelper
     }
 
     /**
-     * Return a Json response when an exception was thrown
+     * Return a Json response when the user isn't authenticated
      *
-     * @param \Throwable $th
+     * @param \Throwable|null $th
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function returnException (Throwable $th) : JsonResponse
+    public static function returnUnauthorized (Throwable $th = null) : JsonResponse
     {
-        if ($th instanceof AuthorizationException) {
-            return response()->json([
-                'success' => false,
-                'msg' => 'El usuario no está autorizado para esta operación',
-                'error' => [
-                    'message' => $th->getMessage()
-                ]
-            ], 403);
-        }
-
         return response()->json([
             'success' => false,
-            'msg' => 'Ups! Hubo un error inesperado',
-            'error' => [
-                'class' => get_class($th),
-                'message' => $th->getMessage(),
-                'code' => $th->getCode(),
-                'file' => $th->getFile(),
-                'line' => $th->getLine(),
-                'trace' => $th->getTrace()
-            ]
-        ], 500);
+            'msg' => 'El usuario no está autenticado',
+            'error' => $th ? ['message' => $th->getMessage()] : null
+        ], 401);
+    }
+
+    /**
+     * Return a Json response when the user isn't authorized
+     *
+     * @param \Throwable|null $th
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public static function returnForbidden (Throwable $th = null) : JsonResponse
+    {
+        return response()->json([
+            'success' => false,
+            'msg' => 'El usuario no está autorizado para esta operación',
+            'error' => $th ? ['message' => $th->getMessage()] : null
+        ], 403);
     }
 
     /**
@@ -70,5 +69,35 @@ class ReturnHelper
             'success' => false,
             'msg' => $msg,
         ], 404);
+    }
+
+    /**
+     * Return a Json response when an exception was thrown
+     *
+     * @param \Throwable $th
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public static function returnException (Throwable $th) : JsonResponse
+    {
+        if ($th instanceof AuthorizationException) {
+            return static::returnForbidden($th);
+        }
+
+        if ($th instanceof AuthenticationException) {
+            return static::returnUnauthorized($th);
+        }
+
+        return response()->json([
+            'success' => false,
+            'msg' => 'Ups! Hubo un error inesperado',
+            'error' => [
+                'class' => get_class($th),
+                'message' => $th->getMessage(),
+                'code' => $th->getCode(),
+                'file' => $th->getFile(),
+                'line' => $th->getLine(),
+                'trace' => $th->getTrace()
+            ]
+        ], 500);
     }
 }
