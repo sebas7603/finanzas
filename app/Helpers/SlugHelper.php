@@ -16,7 +16,7 @@ class SlugHelper
      * @param string $value
      * @return string
      */
-    public static function getNonUniqueSlug (Model $model, string $dataToSlug, string $column)
+    public static function getNonUniqueSlug (Model $model, string $dataToSlug, string $column) : string
     {
         // Chack if slug exists in DB
         $slug = Str::of($dataToSlug)->slug('-');
@@ -38,5 +38,17 @@ class SlugHelper
         }
 
         return $slug;
+    }
+
+    /**
+     * Return a bool that indicates if the slug needs to be changed in DB
+     *
+     * @param string $currentName
+     * @param string $newName
+     * @return bool
+     */
+    public static function checkIfSlugNeedsChange (string $currentName, string $newName) : bool
+    {
+        return Str::of($currentName)->slug('-') != Str::of($newName)->slug('-');
     }
 }

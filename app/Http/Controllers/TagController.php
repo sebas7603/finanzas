@@ -70,7 +70,7 @@ class TagController extends Controller
 
         try {
             DB::beginTransaction();
-            if ($request->name !== $tag->name) $tag->slug = SlugHelper::getNonUniqueSlug($tag, $request->name, 'user_id');
+            if (SlugHelper::checkIfSlugNeedsChange($tag->name, $request->name)) $tag->slug = SlugHelper::getNonUniqueSlug($tag, $request->name, 'user_id');
             $tag->update($request->all());
             DB::commit();
 

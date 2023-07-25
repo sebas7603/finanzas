@@ -73,7 +73,7 @@ class CategoryController extends Controller
         $this->authorize('update', $category);
         try {
             DB::beginTransaction();
-            if ($request->name !== $category->name) $category->slug = SlugHelper::getNonUniqueSlug($category, $request->name, 'user_id');
+            if (SlugHelper::checkIfSlugNeedsChange($category->name, $request->name)) $category->slug = SlugHelper::getNonUniqueSlug($category, $request->name, 'user_id');
             $category->update($request->all());
             DB::commit();
 
