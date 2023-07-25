@@ -27,12 +27,10 @@ class FinancialController extends Controller
     public function create(StoreFinancialRequest $request) : JsonResponse
     {
         try {
-            DB::beginTransaction();
             $financial = new Financial();
             $financial->fill($request->all());
             $financial->user_id = Auth::id();
             $financial->save();
-            DB::commit();
             return response()->json([
                 'success' => true,
                 'msg' => 'Las finanzas se han creado con éxito',
@@ -41,7 +39,6 @@ class FinancialController extends Controller
                 ]
             ], 201);
         } catch (\Throwable $th) {
-            DB::rollback();
             return ReturnHelper::returnException($th);
         }
     }
@@ -67,14 +64,12 @@ class FinancialController extends Controller
 
     public function update(StoreFinancialRequest $request, $id) : JsonResponse
     {
-        try {
-            DB::beginTransaction();
-            $financial = Financial::find($id);
-            if (!$financial) return ReturnHelper::returnNotFound('Las finanzas no existen');
+        $financial = Financial::find($id);
+        if (!$financial) return ReturnHelper::returnNotFound('Las finanzas no existen');
 
-            $this->authorize('update', $financial);
+        $this->authorize('update', $financial);
+        try {
             $financial->update($request->all());
-            DB::commit();
             return response()->json([
                 'success' => true,
                 'msg' => 'Las finanzas se han actualizado con éxito',
@@ -88,7 +83,6 @@ class FinancialController extends Controller
                 ]
             ]);
         } catch (\Throwable $th) {
-            DB::rollback();
             return ReturnHelper::returnException($th);
         }
     }

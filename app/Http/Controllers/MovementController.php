@@ -30,11 +30,12 @@ class MovementController extends Controller
     public function create(StoreMovementRequest $request, $financial_id) : JsonResponse
     {
         $this->authorize('create', Movement::class);
-        $params = $request->all();
-        $params['financial_id'] = $financial_id;
         try {
             DB::beginTransaction();
-            $movement = Movement::create($params);
+            $movement = new Movement();
+            $movement->fill($request->all());
+            $movement->financial_id = $financial_id;
+            $movement->save();
             $movement->tags()->attach($request->tags);
             DB::commit();
             return response()->json([
@@ -66,12 +67,12 @@ class MovementController extends Controller
 
     public function update(StoreMovementRequest $request, $financial_id, $id) : JsonResponse
     {
+        $movement = Movement::where('financial_id', $financial_id)->where('id', $id)->first();
+        if (!$movement) return ReturnHelper::returnNotFound('El movimiento no existe');
+
+        $this->authorize('update', $movement);
         try {
             DB::beginTransaction();
-            $movement = Movement::where('financial_id', $financial_id)->where('id', $id)->first();
-            if (!$movement) return ReturnHelper::returnNotFound('El movimiento no existe');
-
-            $this->authorize('update', $movement);
             $movement->update($request->all());
             if ($request->has('tags')) {
                 if (empty($request->tags)) {
