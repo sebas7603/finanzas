@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ReturnHelper;
 use App\Helpers\SlugHelper;
+use App\Http\Requests\Tag\StoreTagRequest;
 use App\Models\Tag;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class TagController extends Controller
         ]);
     }
 
-    public function create(Request $request) : JsonResponse
+    public function create(StoreTagRequest $request) : JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -62,7 +63,7 @@ class TagController extends Controller
         ]);
     }
 
-    public function update(Request $request, $slug) : JsonResponse
+    public function update(StoreTagRequest $request, $slug) : JsonResponse
     {
         $user = Auth::user();
         $tag = Tag::where('user_id', $user->id)->where('slug', $slug)->first();
