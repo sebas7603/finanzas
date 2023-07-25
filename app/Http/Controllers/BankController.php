@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ReturnHelper;
 use App\Helpers\SlugHelper;
+use App\Http\Requests\Bank\StoreBankRequest;
 use App\Models\Bank;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class BankController extends Controller
         ]);
     }
 
-    public function create(Request $request) : JsonResponse
+    public function create(StoreBankRequest $request) : JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -63,7 +64,7 @@ class BankController extends Controller
         ]);
     }
 
-    public function update(Request $request, $slug) : JsonResponse
+    public function update(StoreBankRequest $request, $slug) : JsonResponse
     {
         $bank = Bank::where('slug', $slug)->first();
         if (!$bank) return ReturnHelper::returnNotFound('El banco no existe');
