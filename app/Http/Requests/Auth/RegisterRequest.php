@@ -30,6 +30,7 @@ class RegisterRequest extends FormRequest
             'email' => 'bail|required|string|email|min:6|unique:App\Models\User,email',
             'password' => ['bail', 'required', 'confirmed', Password::min(8)->letters()->mixedCase()->numbers()->symbols()->uncompromised()],
             'password_confirmation' => 'required',
+            'admin' => 'missing',
         ];
     }
 
@@ -63,6 +64,7 @@ class RegisterRequest extends FormRequest
             'password.confirmed' => 'La confirmación de la contraseña no coincide.',
             'password.min' => 'La contraseña debe tener :min caracteres mínimo.',
             'password_confirmation' => 'La confirmación de la contraseña es obligatoria.',
+            'admin.missing' => 'El parámetro "admin" no debe estar presente en el request.',
         ];
     }
 

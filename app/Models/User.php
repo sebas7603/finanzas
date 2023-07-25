@@ -43,6 +43,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'admin' => 'boolean',
     ];
 
     /**
@@ -77,5 +78,15 @@ class User extends Authenticatable implements JWTSubject
     public function categories()
     {
         return $this->hasMany(Category::class);
+    }
+
+    public function tags()
+    {
+        return $this->hasMany(Tag::class);
+    }
+
+    public function externals()
+    {
+        return $this->hasMany(External::class);
     }
 }

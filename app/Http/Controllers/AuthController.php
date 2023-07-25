@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Helpers\ReturnHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
-
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,8 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-    public function login(LoginRequest $request) {
+    public function login(LoginRequest $request) : JsonResponse
+    {
         $credentials = $request->only('email', 'password');
         $token = Auth::attempt($credentials);
 
@@ -35,7 +37,7 @@ class AuthController extends Controller
             'success' => true,
             'msg' => 'El usuario se ha logueado con éxito',
             'data' => [
-                'user' => $user,
+                'user' => $user->refresh(),
                 'auth' => [
                     'token' => $token,
                     'type' => 'bearer',
@@ -45,7 +47,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(RegisterRequest $request) {
+    public function register(RegisterRequest $request) : JsonResponse
+    {
         try {
             DB::beginTransaction();
             $user = User::create([
@@ -61,7 +64,7 @@ class AuthController extends Controller
                 'success' => true,
                 'msg' => 'El usuario se ha creado con éxito',
                 'data' => [
-                    'user' => $user,
+                    'user' => $user->refresh(),
                     'auth' => [
                         'token' => $token,
                         'type' => 'bearer',
@@ -71,18 +74,12 @@ class AuthController extends Controller
             ], 201);
         } catch (\Throwable $th) {
             DB::rollback();
-            return response()->json([
-                'success' => false,
-                'msg' => 'Ops! Hubo un error inesperado',
-                'error' => [
-                    'message' => $th->getMessage(),
-                    'code' => $th->getCode()
-                ]
-            ], 500);
+            return ReturnHelper::returnException($th);
         }
     }
 
-    public function logout() {
+    public function logout() : JsonResponse
+    {
         Auth::logout();
         return response()->json([
             'success' => true,
@@ -90,7 +87,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function refresh() {
+    public function refresh() : JsonResponse
+    {
         $token = Auth::refresh();
         return response()->json([
             'success' => true,

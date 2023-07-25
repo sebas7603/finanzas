@@ -27,7 +27,7 @@ Route::controller(AuthController::class)->group(function() {
     Route::post('logout', 'logout');
 });
 
-Route::middleware('auth')->group(function() {
+Route::middleware('auth:api')->group(function() {
     Route::controller(FinancialController::class)->prefix('financials')->name('financials.')->group(function() {
         Route::get('/', 'index')->name('index');
         Route::post('/', 'create')->name('create');
