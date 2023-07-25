@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\DB;
 
 class BankController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('check.admin', ['except' => ['index']]);
+    }
+
     public function index() : JsonResponse
     {
         $banks = Bank::orderBy('name')->get();
