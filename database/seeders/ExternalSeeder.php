@@ -16,14 +16,54 @@ class ExternalSeeder extends Seeder
     public function run()
     {
         DB::table('externals')->insert([
-            ['id' => 1, 'name' => 'Netflix'],
-            ['id' => 2, 'name' => 'Falabella'],
-            ['id' => 3, 'name' => 'Rappi'],
-            ['id' => 4, 'name' => 'Compuoptima'],
-            ['id' => 5, 'name' => 'Exito'],
-            ['id' => 6, 'name' => 'Avianca'],
-            ['id' => 7, 'name' => 'Twitch'],
-            ['id' => 8, 'name' => 'AWS'],
+            [
+                'id' => 1,
+                'name' => 'Netflix',
+                'slug' => 'netflix',
+                'user_id' => '1',
+            ],
+            [
+                'id' => 2,
+                'name' => 'Falabella',
+                'slug' => 'falabella',
+                'user_id' => '1',
+            ],
+            [
+                'id' => 3,
+                'name' => 'Rappi',
+                'slug' => 'rappi',
+                'user_id' => '1',
+            ],
+            [
+                'id' => 4,
+                'name' => 'Compuoptima',
+                'slug' => 'compuoptima',
+                'user_id' => '1',
+            ],
+            [
+                'id' => 5,
+                'name' => 'Exito',
+                'slug' => 'exito',
+                'user_id' => '1',
+            ],
+            [
+                'id' => 6,
+                'name' => 'Avianca',
+                'slug' => 'avianca',
+                'user_id' => '1',
+            ],
+            [
+                'id' => 7,
+                'name' => 'Twitch',
+                'slug' => 'twitch',
+                'user_id' => '1',
+            ],
+            [
+                'id' => 8,
+                'name' => 'AWS',
+                'slug' => 'aws',
+                'user_id' => '1',
+            ],
         ]);
     }
 }

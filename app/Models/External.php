@@ -14,6 +14,24 @@ class External extends Model
         'picture',
     ];
 
+    protected $hidden = [
+        'user_id',
+    ];
+
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
+    /**
+     * Eloquent Relationships
+     */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function debts()
     {
         return $this->hasMany(Debt::class);
