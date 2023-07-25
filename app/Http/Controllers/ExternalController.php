@@ -54,6 +54,7 @@ class ExternalController extends Controller
         $user = Auth::user();
         $external = External::where('user_id', $user->id)->where('slug', $slug)->first();
         if (!$external) return ReturnHelper::returnNotFound('El tercero no existe');
+        $this->authorize('view', $external);
 
         return response()->json([
             'success' => true,
@@ -68,6 +69,7 @@ class ExternalController extends Controller
         $user = Auth::user();
         $external = External::where('user_id', $user->id)->where('slug', $slug)->first();
         if (!$external) return ReturnHelper::returnNotFound('El tercero no existe');
+        $this->authorize('update', $external);
 
         try {
             DB::beginTransaction();
@@ -93,6 +95,7 @@ class ExternalController extends Controller
         $user = Auth::user();
         $external = External::where('user_id', $user->id)->where('slug', $slug)->first();
         if (!$external) return ReturnHelper::returnNotFound('El tercero no existe');
+        $this->authorize('delete', $external);
 
         $external->delete();
         return response()->json([
