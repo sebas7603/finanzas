@@ -7,7 +7,6 @@ use App\Http\Requests\Account\CreateAccountRequest;
 use App\Http\Requests\Account\UpdateAccountRequest;
 use App\Models\Account;
 use App\Models\Card;
-use App\Models\Financial;
 use App\Models\Movement;
 use App\Models\PaymentMethod;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -77,7 +76,7 @@ class AccountController extends Controller
             // Creating PaymentMethod
             if ($request->exists('payment_method') && $request->payment_method) {
                 $paymentMethod = new PaymentMethod();
-                $paymentMethod->name = $account->bank->name . ' - Cuenta/PSE';
+                $paymentMethod->name = $account->bank->name . ' - Cuenta';
                 $paymentMethod->account_id = $account->id;
                 $paymentMethod->credit = false;
                 $paymentMethod->save();

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExternalController;
 use App\Http\Controllers\FinancialController;
@@ -47,6 +48,14 @@ Route::middleware('auth:api')->group(function() {
             });
 
             Route::controller(AccountController::class)->prefix('accounts')->name('accounts.')->group(function() {
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'create')->name('create');
+                Route::get('/{id}', 'view')->name('view');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'delete')->name('delete');
+            });
+
+            Route::controller(CardController::class)->prefix('cards')->name('cards.')->group(function() {
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'create')->name('create');
                 Route::get('/{id}', 'view')->name('view');

@@ -12,11 +12,7 @@ class Card extends Model
     use HasFactory, HasUlids, SoftDeletes;
 
     protected $fillable = [
-        'bank_id',
-        'account_id',
-        'card_type_id',
         'last_numbers',
-        'quota',
         'amount',
         'fee',
         'balance_day',
@@ -31,11 +27,11 @@ class Card extends Model
     ];
 
     protected $casts = [
-        'quota' => 'numeric',
-        'amount' => 'numeric',
-        'fee' => 'numeric',
-        'balance_day' => 'numeric',
-        'payment_day' => 'numeric',
+        'quota' => 'decimal:2',
+        'amount' => 'decimal:2',
+        'fee' => 'decimal:2',
+        'balance_day' => 'integer',
+        'payment_day' => 'integer',
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
         'deleted_at' => 'timestamp',
