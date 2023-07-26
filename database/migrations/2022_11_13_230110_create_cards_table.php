@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('cards', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
+            $table->ulid('financial_id');
             $table->unsignedBigInteger('bank_id');
             $table->ulid('account_id')->nullable();
             $table->unsignedBigInteger('card_type_id');
@@ -26,9 +27,12 @@ return new class extends Migration
             $table->smallInteger('payment_day')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->softDeletes();
+            $table->foreign('financial_id')->references('id')->on('financials');
             $table->foreign('bank_id')->references('id')->on('banks');
             $table->foreign('account_id')->references('id')->on('accounts');
             $table->foreign('card_type_id')->references('id')->on('card_types');
+            $table->unique(['bank_id', 'last_numbers']);
         });
     }
 

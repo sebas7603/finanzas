@@ -20,7 +20,8 @@ class CardSeeder extends Seeder
         $colpatriaBank = Bank::where('name', 'Scotiabank Colpatria')->first();
         DB::table('cards')->insert([
             [
-                'id' => 1,
+                'id' => '1',
+                'financial_id' => '1',
                 'bank_id' => $coofinepBank->id,
                 'account_id' => $coofinepBank->accounts()->first()->id,
                 'card_type_id' => 1,
@@ -32,7 +33,8 @@ class CardSeeder extends Seeder
                 'payment_day' => null,
             ],
             [
-                'id' => 2,
+                'id' => '2',
+                'financial_id' => '1',
                 'bank_id' => $colpatriaBank->id,
                 'account_id' => null,
                 'card_type_id' => 2,

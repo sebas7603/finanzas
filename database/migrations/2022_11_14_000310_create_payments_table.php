@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('payment_method_id');
             $table->unsignedBigInteger('debt_id')->nullable();
             $table->unsignedBigInteger('subscription_id')->nullable();
-            $table->unsignedBigInteger('card_id')->nullable();
+            $table->ulid('card_id')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');

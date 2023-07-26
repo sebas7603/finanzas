@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Card extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUlids, SoftDeletes;
 
     protected $fillable = [
         'bank_id',
@@ -20,6 +22,33 @@ class Card extends Model
         'balance_day',
         'payment_day',
     ];
+
+    protected $hidden = [
+        'financial_id',
+        'bank_id',
+        'account_id',
+        'card_type_id',
+    ];
+
+    protected $casts = [
+        'quota' => 'numeric',
+        'amount' => 'numeric',
+        'fee' => 'numeric',
+        'balance_day' => 'numeric',
+        'payment_day' => 'numeric',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+        'deleted_at' => 'timestamp',
+    ];
+
+    /**
+     * Eloquent Relationships
+     */
+
+    public function financial()
+    {
+        return $this->belongsTo(Financial::class);
+    }
 
     public function account()
     {

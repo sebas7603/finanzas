@@ -40,6 +40,11 @@ class Financial extends Model
         return $this->hasMany(Balance::class);
     }
 
+    public function cards()
+    {
+        return $this->hasMany(Card::class);
+    }
+
     public function lastBalance()
     {
         return $this->hasOne(Balance::class)->latest();

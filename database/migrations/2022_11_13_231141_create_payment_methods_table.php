@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->ulid('account_id')->nullable();
-            $table->unsignedBigInteger('card_id')->nullable();
+            $table->ulid('card_id')->nullable();
             $table->boolean('enabled')->default(true);
             $table->boolean('credit')->default(false);
             $table->timestamp('created_at')->useCurrent();
