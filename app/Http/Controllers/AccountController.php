@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ReturnHelper;
 use App\Http\Requests\Account\CreateAccountRequest;
+use App\Http\Requests\Account\UpdateAccountRequest;
 use App\Models\Account;
 use App\Models\Card;
 use App\Models\Financial;
@@ -106,7 +107,7 @@ class AccountController extends Controller
         ]);
     }
 
-    public function update(Request $request, $financial_id, $id) : JsonResponse
+    public function update(UpdateAccountRequest $request, $financial_id, $id) : JsonResponse
     {
         $account = Account::where('financial_id', $financial_id)->where('id', $id)->first();
         if (!$account) return ReturnHelper::returnNotFound('La cuenta no existe');
