@@ -22,6 +22,7 @@ class AccountController extends Controller
     public function index($financial_id) : JsonResponse
     {
         $accounts = Account::withCount('movements')->where('financial_id', $financial_id)->get();
+        $this->authorize('index', Account::class);
         return response()->json([
             'success' => true,
             'data' => [
@@ -32,6 +33,7 @@ class AccountController extends Controller
 
     public function create(CreateAccountRequest $request, $financial_id) : JsonResponse
     {
+        $this->authorize('create', Account::class);
         try {
             DB::beginTransaction();
             // Creating account
@@ -98,6 +100,7 @@ class AccountController extends Controller
     {
         $account = Account::withCount('movements')->where('financial_id', $financial_id)->where('id', $id)->first();
         if (!$account) return ReturnHelper::returnNotFound('La cuenta no existe');
+        $this->authorize('view', Account::class);
 
         return response()->json([
             'success' => true,
@@ -111,6 +114,7 @@ class AccountController extends Controller
     {
         $account = Account::where('financial_id', $financial_id)->where('id', $id)->first();
         if (!$account) return ReturnHelper::returnNotFound('La cuenta no existe');
+        $this->authorize('update', Account::class);
 
         try {
             DB::beginTransaction();
@@ -135,6 +139,7 @@ class AccountController extends Controller
     {
         $account = Account::where('financial_id', $financial_id)->where('id', $id)->first();
         if (!$account) return ReturnHelper::returnNotFound('La cuenta no existe');
+        $this->authorize('delete', Account::class);
 
         // TODO: Remove Card
         // TODO: Remove PaymentMethod
