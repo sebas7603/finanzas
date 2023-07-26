@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ReturnHelper;
+use App\Http\Requests\Card\CreateCardRequest;
 use App\Models\Card;
 use App\Models\PaymentMethod;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -25,7 +26,7 @@ class CardController extends Controller
         ]);
     }
 
-    public function create(Request $request, $financial_id) : JsonResponse
+    public function create(CreateCardRequest $request, $financial_id) : JsonResponse
     {
         try {
             DB::beginTransaction();
