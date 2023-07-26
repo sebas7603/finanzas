@@ -26,6 +26,11 @@ class Card extends Model
         return $this->belongsTo(Account::class);
     }
 
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
+    }
+
     public function cardType()
     {
         return $this->belongsTo(CardType::class);
