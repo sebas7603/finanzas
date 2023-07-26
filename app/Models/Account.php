@@ -14,7 +14,6 @@ class Account extends Model
     protected $fillable = [
         'bank_id',
         'number',
-        'balance',
     ];
 
     protected $hidden = [

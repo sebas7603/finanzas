@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ReturnHelper;
+use App\Http\Requests\Account\CreateAccountRequest;
 use App\Models\Account;
 use App\Models\Card;
 use App\Models\Financial;
@@ -28,7 +29,7 @@ class AccountController extends Controller
         ]);
     }
 
-    public function create(Request $request, $financial_id) : JsonResponse
+    public function create(CreateAccountRequest $request, $financial_id) : JsonResponse
     {
         try {
             DB::beginTransaction();
