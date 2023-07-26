@@ -6,6 +6,7 @@ use Closure;
 use App\Helpers\ReturnHelper;
 use App\Models\Financial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CheckFinancialExists
@@ -18,7 +19,7 @@ class CheckFinancialExists
     public function handle(Request $request, Closure $next): JsonResponse
     {
         $id = $request->route('financial_id');
-        $financial = Financial::find($id);
+        $financial = Financial::where('id', $id)->where('user_id', Auth::id())->first();
         if (!$financial) {
             return ReturnHelper::returnNotFound('Las finanzas no existen');
         }
