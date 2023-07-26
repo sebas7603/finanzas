@@ -18,7 +18,6 @@ class MovementController extends Controller
     public function index($financial_id) : JsonResponse
     {
         $movements = Movement::where('financial_id', $financial_id)->get();
-        $this->authorize('index', Movement::class);
         return response()->json([
             'success' => true,
             'data' => [
@@ -29,7 +28,6 @@ class MovementController extends Controller
 
     public function create(StoreMovementRequest $request, $financial_id) : JsonResponse
     {
-        $this->authorize('create', Movement::class);
         try {
             DB::beginTransaction();
             $movement = new Movement();
@@ -56,7 +54,6 @@ class MovementController extends Controller
         $movement = Movement::where('financial_id', $financial_id)->where('id', $id)->first();
         if (!$movement) return ReturnHelper::returnNotFound('El movimiento no existe');
 
-        $this->authorize('view', $movement);
         return response()->json([
             'success' => true,
             'data' => [
@@ -70,7 +67,6 @@ class MovementController extends Controller
         $movement = Movement::where('financial_id', $financial_id)->where('id', $id)->first();
         if (!$movement) return ReturnHelper::returnNotFound('El movimiento no existe');
 
-        $this->authorize('update', $movement);
         try {
             DB::beginTransaction();
             $movement->update($request->all());
@@ -102,7 +98,6 @@ class MovementController extends Controller
         $movement = Movement::where('financial_id', $financial_id)->where('id', $id)->first();
         if (!$movement) return ReturnHelper::returnNotFound('El movimiento no existe');
 
-        $this->authorize('delete', $movement);
         $movement->tags()->detach();
         $movement->delete();
         return response()->json([
