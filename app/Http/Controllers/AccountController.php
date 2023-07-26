@@ -56,6 +56,7 @@ class AccountController extends Controller
             // Creating Card
             if ($request->exists('card_last_numbers') && $request->card_last_numbers) {
                 $card = new Card();
+                $card->financial_id = $financial_id;
                 $card->bank_id = $account->bank_id;
                 $card->account_id = $account->id;
                 $card->card_type_id = 1;
