@@ -30,6 +30,7 @@ return [
     'distinct' => 'Los :attribute tienen un valor duplicado.',
     'email' => 'El :attribute no es un email válido.',
     'exists' => 'El :attribute seleccionado no existe.',
+    'filled' => 'El :attribute no puede ser nulo.',
     'max' => [
         'array' => 'El :attribute no debe tenér mas de :max items.',
         'file' => 'El :attribute no debe tener más de :max kilobytes.',

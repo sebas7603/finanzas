@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ReturnHelper;
 use App\Http\Requests\Card\CreateCardRequest;
+use App\Http\Requests\Card\UpdateCardRequest;
 use App\Models\Card;
 use App\Models\PaymentMethod;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -74,7 +75,7 @@ class CardController extends Controller
         ]);
     }
 
-    public function update(Request $request, $financial_id, $id) : JsonResponse
+    public function update(UpdateCardRequest $request, $financial_id, $id) : JsonResponse
     {
         $card = Card::where('financial_id', $financial_id)->where('id', $id)->first();
         if (!$card) return ReturnHelper::returnNotFound('La tarjeta no existe');
