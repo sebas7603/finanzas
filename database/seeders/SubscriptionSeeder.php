@@ -18,6 +18,7 @@ class SubscriptionSeeder extends Seeder
         DB::table('subscriptions')->insert([
             [
                 'id' => 1,
+                'financial_id' => '1',
                 'description' => 'Suscripción de Netflix',
                 'amount' => 35000.00,
                 'day' => 17,
@@ -27,6 +28,7 @@ class SubscriptionSeeder extends Seeder
             ],
             [
                 'id' => 2,
+                'financial_id' => '1',
                 'description' => 'Intancia de EC2 y S3 de AWS',
                 'amount' => 150000.00,
                 'day' => 18,
