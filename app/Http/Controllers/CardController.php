@@ -33,21 +33,27 @@ class CardController extends Controller
             DB::beginTransaction();
             // Creating card
             $card = new Card();
-            $card->fill($request->all());
+            $card->fill($request->only([
+                'bank_id',
+                'card_type_id',
+                'last_numbers',
+                'account_id',
+                'amount',
+                'fee',
+                'balance_day',
+                'payment_day',
+            ]));
             $card->financial_id = $financial_id;
-            $card->bank_id = $request->bank_id;
-            $card->account_id = $request->account_id;
-            $card->card_type_id = $request->card_type_id;
             $card->quota = 0;
             $card->save();
 
             // Creating PaymentMethod
-            $paymentMethod = new PaymentMethod();
-            $paymentMethod->name = $card->bank->name . ' - ' . $card->cardType->name;
-            $paymentMethod->card_id = $card->id;
-            $paymentMethod->enabled = true;
-            $paymentMethod->credit = $card->card_type_id == 2;
-            $paymentMethod->save();
+            $paymentMethod = PaymentMethod::create([
+                'name' => $card->bank->name . ' - ' . $card->cardType->name,
+                'card_id' => $card->id,
+                'enabled' => true,
+                'credit' => $card->card_type_id == 2,
+            ]);
             DB::commit();
             return response()->json([
                 'success' => true,
@@ -82,7 +88,13 @@ class CardController extends Controller
 
         try {
             DB::beginTransaction();
-            $card->update($request->all());
+            $card->update($request->only([
+                'last_numbers',
+                'amount',
+                'fee',
+                'balance_day',
+                'payment_day',
+            ]));
             DB::commit();
             return response()->json([
                 'success' => true,
@@ -102,11 +114,19 @@ class CardController extends Controller
         $card = Card::where('financial_id', $financial_id)->where('id', $id)->first();
         if (!$card) return ReturnHelper::returnNotFound('La tarjeta no existe');
 
-        PaymentMethod::destroy($card->paymentMethods()->get('id')->pluck('id'));
-        $card->delete();
-        return response()->json([
-            'success' => true,
-            'msg' => 'La tarjeta se ha eliminado con éxito',
-        ]);
+        try {
+            DB::beginTransaction();
+            PaymentMethod::destroy($card->paymentMethods()->get('id')->pluck('id'));
+            $card->delete();
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'msg' => 'La tarjeta se ha eliminado con éxito',
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            return ReturnHelper::returnException($th);
+        }
     }
 }

@@ -12,6 +12,8 @@ class Card extends Model
     use HasFactory, HasUlids, SoftDeletes;
 
     protected $fillable = [
+        'bank_id',
+        'card_type_id',
         'last_numbers',
         'amount',
         'fee',

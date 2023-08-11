@@ -89,7 +89,7 @@ class UpdateCardRequest extends FormRequest
             'account_id' => 'cuenta',
             'quota' => 'valor a pagar',
             'amount' => 'cupo',
-            'card_fee' => 'cuota de manejo de la tarjeta',
+            'fee' => 'cuota de manejo de la tarjeta',
             'balance_day' => 'día de corte',
             'payment_day' => 'día límite de pago',
         ];
