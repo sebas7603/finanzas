@@ -7,7 +7,8 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
-
+use Illuminate\Support\Facades\DB;
+use Closure;
 class CreateCardRequest extends FormRequest
 {
     /**
@@ -29,7 +30,21 @@ class CreateCardRequest extends FormRequest
             'financial_id' => 'missing',
             'bank_id' => 'bail|required|exists:App\Models\Bank,id',
             'card_type_id' => 'bail|required|exists:App\Models\CardType,id',
-            'last_numbers' => 'bail|required|regex:/^[0-9]+$/|size:4',
+            'last_numbers' => [
+                'bail',
+                'required',
+                'regex:/^[0-9]+$/',
+                'size:4',
+                function (string $attribute, mixed $value, Closure $fail) {
+                    $numbersBankExists = DB::table('cards')
+                        ->where('last_numbers', '=', $value)
+                        ->where('bank_id', '=', $this->bank_id)
+                        ->first();
+                    if ($numbersBankExists) {
+                        $fail('Los últimos 4 dígitos de la tarjeta ya están asociados al banco.');
+                    }
+                },
+            ],
             'account_id' => 'bail|required_if:card_type_id,1|prohibited_unless:card_type_id,1|exists:App\Models\Account,id',
             'quota' => 'missing',
             'amount' => 'bail|required_if:card_type_id,2|prohibited_unless:card_type_id,2|numeric|min:500',

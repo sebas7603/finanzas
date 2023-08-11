@@ -8,6 +8,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Closure;
 
 class UpdateCardRequest extends FormRequest
@@ -34,7 +35,24 @@ class UpdateCardRequest extends FormRequest
             'financial_id' => 'missing',
             'bank_id' => 'missing',
             'card_type_id' => 'missing',
-            'last_numbers' => 'bail|filled|regex:/^[0-9]+$/|size:4',
+            'last_numbers' => [
+                'bail',
+                'filled',
+                'regex:/^[0-9]+$/',
+                'size:4',
+                function (string $attribute, mixed $value, Closure $fail) {
+                    if ($this->card) {
+                        $numbersBankExists = DB::table('cards')
+                            ->where('last_numbers', '=', $value)
+                            ->where('bank_id', '=', $this->card->bank_id)
+                            ->where('id', '<>', $this->card->id)
+                            ->first();
+                        if ($numbersBankExists) {
+                            $fail('Los últimos 4 dígitos de la tarjeta ya están asociados al banco.');
+                        }
+                    }
+                },
+            ],
             'account_id' => 'missing',
             'quota' => 'missing',
             'amount' => [
