@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ReturnHelper;
+use App\Http\Requests\Subscription\StoreSubscriptionRequest;
 use App\Models\Subscription;
 use App\Models\Payment;
 use Illuminate\Http\JsonResponse;
@@ -24,7 +25,7 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    public function create(Request $request, $financial_id) : JsonResponse
+    public function create(StoreSubscriptionRequest $request, $financial_id) : JsonResponse
     {
         try {
             $subscription = new Subscription();
@@ -63,7 +64,7 @@ class SubscriptionController extends Controller
         ]);
     }
 
-    public function update(Request $request, $financial_id, $id) : JsonResponse
+    public function update(StoreSubscriptionRequest $request, $financial_id, $id) : JsonResponse
     {
         $subscription = Subscription::where('financial_id', $financial_id)->where('id', $id)->first();
         if (!$subscription) return ReturnHelper::returnNotFound('La suscripción no existe');
