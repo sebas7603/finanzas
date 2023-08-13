@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ExternalController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\MovementController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TagController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,14 @@ Route::middleware('auth:api')->group(function() {
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'create')->name('create');
                 Route::get('/{id}', 'view')->name('view');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'delete')->name('delete');
+            });
+
+            Route::controller(SubscriptionController::class)->prefix('subscriptions')->name('subscriptions.')->group(function() {
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'create')->name('create');
+                Route::get('/{id}', 'show')->name('show');
                 Route::put('/{id}', 'update')->name('update');
                 Route::delete('/{id}', 'delete')->name('delete');
             });
