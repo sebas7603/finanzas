@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DebtController;
 use App\Http\Controllers\ExternalController;
 use App\Http\Controllers\FinancialController;
 use App\Http\Controllers\MovementController;
@@ -65,6 +66,14 @@ Route::middleware('auth:api')->group(function() {
             });
 
             Route::controller(SubscriptionController::class)->prefix('subscriptions')->name('subscriptions.')->group(function() {
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'create')->name('create');
+                Route::get('/{id}', 'show')->name('show');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'delete')->name('delete');
+            });
+
+            Route::controller(DebtController::class)->prefix('debts')->name('debts.')->group(function() {
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'create')->name('create');
                 Route::get('/{id}', 'show')->name('show');
