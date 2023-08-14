@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Debt extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUlids, SoftDeletes;
 
     protected $fillable = [
         'description',
@@ -21,6 +23,34 @@ class Debt extends Model
         'external_id',
         'bank_id',
     ];
+
+    protected $hidden = [
+        'financial_id',
+        'category_id',
+        'external_id',
+        'bank_id',
+    ];
+
+    protected $casts = [
+        'amount' => 'decimal:2',
+        'fee_value' => 'decimal:2',
+        'fee_day' => 'integer',
+        'fee_number' => 'integer',
+        'fee_current' => 'integer',
+        'status' => 'integer',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+        'deleted_at' => 'timestamp',
+    ];
+
+    /**
+     * Eloquent Relationships
+     */
+
+    public function financial()
+    {
+        return $this->belongsTo(Financial::class);
+    }
 
     public function category()
     {

@@ -20,6 +20,7 @@ class DebtSeeder extends Seeder
         DB::table('debts')->insert([
             [
                 'id' => 1,
+                'financial_id' => '1',
                 'description' => 'Préstamo Coofinep de prueba',
                 'amount' => 5000000.00,
                 'fee_value' => 272000.00,

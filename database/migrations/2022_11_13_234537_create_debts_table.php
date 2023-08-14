@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('debts', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary();
+            $table->ulid('financial_id');
             $table->string('description');
+            $table->boolean('user_receives')->default(false);
             $table->decimal('amount', 11, 2)->default(0.0);
             $table->decimal('fee_value', 11, 2)->default(0.0);
             $table->smallInteger('fee_day')->default(1);
@@ -27,6 +29,8 @@ return new class extends Migration
             $table->unsignedBigInteger('bank_id')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
+            $table->softDeletes();
+            $table->foreign('financial_id')->references('id')->on('financials');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('external_id')->references('id')->on('externals');
             $table->foreign('bank_id')->references('id')->on('banks');

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('amount', 11, 2);
             $table->smallInteger('day')->default(1);
             $table->unsignedBigInteger('payment_method_id');
-            $table->unsignedBigInteger('debt_id')->nullable();
+            $table->ulid('debt_id')->nullable();
             $table->ulid('subscription_id')->nullable();
             $table->ulid('card_id')->nullable();
             $table->timestamp('created_at')->useCurrent();
