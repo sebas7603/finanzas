@@ -64,7 +64,7 @@ class Debt extends Model
 
     public function bank()
     {
-        $this->belongsTo(Bank::class);
+        return $this->belongsTo(Bank::class);
     }
 
     public function payments()
